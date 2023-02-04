@@ -1,6 +1,0 @@
-.full-img {
-    display: block;
-    max-height: calc(100vh - 64px - 56px);
-    max-width: 100%;
-    margin: auto;
-}

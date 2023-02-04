@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Grid, Box, Skeleton, CircularProgress } from '@mui/material';
+import { Grid, Box, CircularProgress } from '@mui/material';
 import { useTheme } from '@emotion/react';
 import { fetch } from '@tauri-apps/api/http';
 import PubSub from 'pubsub-js'
@@ -32,7 +32,7 @@ export default function ImageList() {
     return (
         !loading ? (
             imgList.length !== 0 ?
-                <Grid container sx={{ justifyContent: 'space-around' }} >
+                <Grid container className='img-list' sx={{ justifyContent: 'space-around', height: 'calc(100vh - 150px)', overflow: 'auto' }} >
                     {
                         imgList.map((x) => {
                             return (
