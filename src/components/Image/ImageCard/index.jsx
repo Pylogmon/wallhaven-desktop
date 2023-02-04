@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
-import { Card, CardMedia, CardActions, IconButton, Tooltip, Dialog, DialogContent, DialogActions, Skeleton } from '@mui/material'
-import WallpaperOutlinedIcon from '@mui/icons-material/WallpaperOutlined';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
-import AddToQueueOutlinedIcon from '@mui/icons-material/AddToQueueOutlined';
+import { Card, CardMedia, CardActions, IconButton, Tooltip, Dialog, DialogContent, DialogActions, Skeleton, CardActionArea } from '@mui/material'
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import ImageViewer from '../ImageViewer';
+import ImageActions from '../ImageActions';
+import ImageInfo from '../ImageInfo';
 
 export default function ImageCard(props) {
     const { meta } = props;
-    const [open, setOpen] = useState(false);
+    const [openImage, setOpenImage] = useState(false);
+    const [openInfo, setOpenInfo] = useState(false);
     const [loading, setLoading] = useState(true);
     let image = new Image();
     image.src = meta['thumbs']['small'];
@@ -18,78 +17,48 @@ export default function ImageCard(props) {
     }
     return (
         <>
-            <Card sx={{ maxWidth: 250, margin: '8px' }}>
-                {!loading ? <CardMedia
-                    component='img'
-                    height='140'
-                    image={meta['thumbs']['small']}
-                /> :
-                    <>
-                        <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
-                        <Skeleton variant="circular" width={20} height={20} />
-                        <Skeleton variant="rectangular" width={210} height={40} />
-                        <Skeleton variant="rounded" width={210} height={50} />
-                    </>
-                }
+            <Card sx={{ maxWidth: 250, margin: '8px' }} >
+                <CardActionArea onClick={() => { setOpenImage(true) }}>
+                    {!loading ? <CardMedia
+                        component='img'
+                        height='140'
+                        image={meta['thumbs']['small']}
+                    /> :
+                        <>
+                            <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                            <Skeleton variant="circular" width={20} height={20} />
+                            <Skeleton variant="rectangular" width={210} height={40} />
+                            <Skeleton variant="rounded" width={210} height={50} />
+                        </>
+                    }
+                </CardActionArea>
                 <CardActions sx={{ justifyContent: 'space-between' }}>
-                    <Tooltip title="收藏">
-                        <IconButton>
-                            <FavoriteBorderOutlinedIcon />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="查看原图">
-                        <IconButton onClick={() => { setOpen(true) }}>
-                            <WallpaperOutlinedIcon />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="下载">
-                        <IconButton>
-                            <CloudDownloadOutlinedIcon />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="设为壁纸">
-                        <IconButton>
-                            <AddToQueueOutlinedIcon />
-                        </IconButton>
-                    </Tooltip>
+                    <ImageActions setOpenInfo={setOpenInfo} />
                 </CardActions>
             </Card>
             <Dialog
                 fullWidth
                 maxWidth={false}
-                open={open}
-                onClose={() => { setOpen(false) }}
+                open={openImage}
+                onClose={() => { setOpenImage(false) }}
             >
                 <DialogContent sx={{ padding: 0 }}>
                     <ImageViewer meta={meta} />
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'space-between' }}>
-                    <Tooltip title="收藏">
-                        <IconButton>
-                            <FavoriteBorderOutlinedIcon />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="查看原图">
-                        <IconButton onClick={() => { setOpen(true) }}>
-                            <WallpaperOutlinedIcon />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="下载">
-                        <IconButton>
-                            <CloudDownloadOutlinedIcon />
-                        </IconButton>
-                    </Tooltip>
-                    <Tooltip title="设为壁纸">
-                        <IconButton>
-                            <AddToQueueOutlinedIcon />
-                        </IconButton>
-                    </Tooltip>
+                    <ImageActions setOpenInfo={setOpenInfo} />
                     <Tooltip title="关闭">
-                        <IconButton onClick={() => { setOpen(false) }}>
+                        <IconButton onClick={() => { setOpenImage(false) }}>
                             <CloseOutlinedIcon />
                         </IconButton>
                     </Tooltip>
                 </DialogActions>
+            </Dialog>
+            <Dialog
+                open={openInfo}
+                onClose={() => { setOpenInfo(false) }}
+            >
+                <ImageInfo setOpenInfo={setOpenInfo} imageId={meta['id']} />
             </Dialog>
         </>
     )
