@@ -4,6 +4,7 @@ import WallpaperOutlinedIcon from '@mui/icons-material/WallpaperOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
 import AddToQueueOutlinedIcon from '@mui/icons-material/AddToQueueOutlined';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import ImageViewer from '../ImageViewer';
 
 export default function ImageCard(props) {
@@ -46,13 +47,33 @@ export default function ImageCard(props) {
                 open={open}
                 onClose={() => { setOpen(false) }}
             >
-                <DialogContent>
+                <DialogContent sx={{ padding: 0 }}>
                     <ImageViewer meta={meta} />
                 </DialogContent>
-                <DialogActions>
+                <DialogActions sx={{ justifyContent: 'space-between' }}>
+                    <Tooltip title="收藏">
+                        <IconButton>
+                            <FavoriteBorderOutlinedIcon />
+                        </IconButton>
+                    </Tooltip>
                     <Tooltip title="查看原图">
-                        <IconButton onClick={() => { setOpen(false) }}>
+                        <IconButton onClick={() => { setOpen(true) }}>
                             <WallpaperOutlinedIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="下载">
+                        <IconButton>
+                            <CloudDownloadOutlinedIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="设为壁纸">
+                        <IconButton>
+                            <AddToQueueOutlinedIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="关闭">
+                        <IconButton onClick={() => { setOpen(false) }}>
+                            <CloseOutlinedIcon />
                         </IconButton>
                     </Tooltip>
                 </DialogActions>

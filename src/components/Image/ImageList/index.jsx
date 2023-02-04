@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Grid, Box, Skeleton } from '@mui/material';
+import { Grid, Box, Skeleton, CircularProgress } from '@mui/material';
+import { useTheme } from '@emotion/react';
 import { fetch } from '@tauri-apps/api/http';
 import PubSub from 'pubsub-js'
 import { nanoid } from 'nanoid';
@@ -9,46 +10,51 @@ export default function ImageList() {
     const [search, setSearch] = useState({});
     const [imgList, setImgList] = useState([]);
     const [loading, setLoading] = useState(true);
+
+    const { palette: { background } } = useTheme();
     useEffect(() => {
-        if (search.length !== 0) {
-            console.log("fetch", search)
-            setLoading(true)
-            fetch('https://wallhaven.cc/api/v1/search', {
-                method: 'GET',
-                timeout: 30,
-                query: search,
-            }).then(
-                res => {
-                    setLoading(false);
-                    setImgList(res.data['data']); console.log(res.data.data);
-                }
-            )
-            // setSearch({});
-        } else {
-            return
-        }
+        console.log("fetch", search)
+        setLoading(true)
+        fetch('https://wallhaven.cc/api/v1/search', {
+            method: 'GET',
+            timeout: 30,
+            query: search,
+        }).then(
+            res => {
+                setImgList(res.data['data']); console.log(res.data.data);
+                setLoading(false);
+            }
+        )
     }, [search]);
     PubSub.subscribe('search', (_, v) => {
         setSearch(v);
     })
     return (
-        !loading ?
-            <Grid container sx={{ justifyContent: 'space-around' }} >
-                {
-                    imgList.map((x) => {
-                        return (
-                            <Grid item key={nanoid()} xs='auto' >
-                                <ImageCard meta={x} />
-                            </Grid>
-                        )
-                    })
-                }
-            </Grid >
-            : <Box sx={{ textAlign: 'center', justifyContent: 'space-around' }}>
-                <Skeleton variant="text" sx={{ fontSize: '3rem' }} />
-                <Skeleton variant="rectangular" height={60} />
-                <Skeleton variant="text" sx={{ fontSize: '3rem' }} />
-                <Skeleton variant="rounded" height={60} />
+        !loading ? (
+            imgList.length !== 0 ?
+                <Grid container sx={{ justifyContent: 'space-around' }} >
+                    {
+                        imgList.map((x) => {
+                            return (
+                                <Grid item key={nanoid()} xs='auto' >
+                                    <ImageCard meta={x} />
+                                </Grid>
+                            )
+                        })
+                    }
+                </Grid >
+                : <Grid container sx={{ justifyContent: 'space-around' }} >
+                    <Grid item xs='auto' >
+                        <h1 style={{ color: background.paper, margin: 'auto' }}>
+                            没有符合条件的结果
+                        </h1>
+                    </Grid>
+                </Grid >
+        )
+            : <Box sx={{
+                textAlign: 'center',
+            }}>
+                <CircularProgress />
             </Box>
     )
 }
