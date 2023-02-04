@@ -4,8 +4,8 @@ import PubSub from 'pubsub-js'
 
 export default function TypeFilter() {
     const [general, setGeneral] = useState(1);
-    const [anime, setAnime] = useState(0);
-    const [people, setPeople] = useState(0);
+    const [anime, setAnime] = useState(1);
+    const [people, setPeople] = useState(1);
 
     useEffect(() => {
         const categories = `${general}${anime}${people}`;

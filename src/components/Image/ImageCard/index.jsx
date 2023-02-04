@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Card, CardMedia, CardActions, IconButton, Tooltip, Dialog, DialogContent, DialogActions } from '@mui/material'
+import { Card, CardMedia, CardActions, IconButton, Tooltip, Dialog, DialogContent, DialogActions, Skeleton } from '@mui/material'
 import WallpaperOutlinedIcon from '@mui/icons-material/WallpaperOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import CloudDownloadOutlinedIcon from '@mui/icons-material/CloudDownloadOutlined';
@@ -10,14 +10,27 @@ import ImageViewer from '../ImageViewer';
 export default function ImageCard(props) {
     const { meta } = props;
     const [open, setOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
+    let image = new Image();
+    image.src = meta['thumbs']['small'];
+    image.onload = () => {
+        setLoading(false);
+    }
     return (
         <>
             <Card sx={{ maxWidth: 250, margin: '8px' }}>
-                <CardMedia
+                {!loading ? <CardMedia
                     component='img'
                     height='140'
                     image={meta['thumbs']['small']}
-                />
+                /> :
+                    <>
+                        <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
+                        <Skeleton variant="circular" width={20} height={20} />
+                        <Skeleton variant="rectangular" width={210} height={40} />
+                        <Skeleton variant="rounded" width={210} height={50} />
+                    </>
+                }
                 <CardActions sx={{ justifyContent: 'space-between' }}>
                     <Tooltip title="收藏">
                         <IconButton>
