@@ -10,11 +10,9 @@ export default function ImageList() {
     const [search, setSearch] = useState({});
     const [imgList, setImgList] = useState([]);
     const [loading, setLoading] = useState(true);
-
     const { palette: { background } } = useTheme();
     useEffect(() => {
         setLoading(true)
-        console.log(search)
         fetch('https://wallhaven.cc/api/v1/search', {
             method: 'GET',
             timeout: 30,
@@ -27,7 +25,7 @@ export default function ImageList() {
         )
     }, [search]);
     PubSub.subscribe('search', (_, v) => {
-        setSearch(v);
+        setSearch({ ...v, ...{ 'seed': nanoid() } });
     })
     return (
         !loading ? (

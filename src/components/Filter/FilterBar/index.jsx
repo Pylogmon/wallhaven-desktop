@@ -43,7 +43,6 @@ export default function FilterBar() {
                     size='small'
                     endIcon={<SyncIcon />}
                     onClick={() => {
-                        console.log(search)
                         PubSub.publish('search', search);
                     }}
                 >

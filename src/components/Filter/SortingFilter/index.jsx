@@ -22,9 +22,9 @@ export default function SortingFilter() {
                     <MenuItem value='views'>浏览量</MenuItem>
                     <MenuItem value='toplist'>排行榜</MenuItem>
                     <MenuItem value='favorites'>收藏量</MenuItem>
+                    <MenuItem value='hot'>最热门</MenuItem>
+                    <MenuItem value='date_added'>最新</MenuItem>
                     <MenuItem value='random'>随机</MenuItem>
-                    <MenuItem value='date_added'>日期</MenuItem>
-                    <MenuItem value='hot'>热门</MenuItem>
                 </Select>
             </FormControl>
             {

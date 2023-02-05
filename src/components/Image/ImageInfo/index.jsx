@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Avatar, Card, CardHeader, CardMedia, CardContent, IconButton, Skeleton, Typography, Tooltip } from '@mui/material';
+import { Avatar, Card, CardHeader, Box, CardContent, IconButton, Skeleton, Typography, Tooltip, Chip } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 import { fetch } from '@tauri-apps/api/http';
+import ColorBar from './ColorBar';
+import TagsCloud from './TagsCloud';
+
 export default function ImageInfo(props) {
     const { setOpenInfo, imageId } = props;
     const [info, setInfo] = useState();
@@ -26,13 +31,13 @@ export default function ImageInfo(props) {
             res => {
                 setInfo(res.data['data']);
                 setLoadingInfo(false);
-                image.src = res.data['data']['thumbs']['large'];
+                image.src = res.data['data']['thumbs']['original'];
                 avatar.src = res.data['data']['uploader']['avatar']['32px'];
             }
         )
     }, [])
     return (
-        <Card sx={{ maxWidth: '400px' }}>
+        <Card sx={{ width: '400px' }}>
             {
                 !loadingInfo ?
                     <>
@@ -44,23 +49,36 @@ export default function ImageInfo(props) {
                                     <Skeleton variant="circular" width={32} height={32} />
                             }
                             action={
-                                <Tooltip title="转到Wallhaven">
-                                    <a href={info['url']} target="_blank">
-                                        <IconButton>
-                                            <OpenInNewOutlinedIcon />
+                                <>
+                                    <Tooltip title="转到Wallhaven">
+                                        <a href={info['url']} target="_blank">
+                                            <IconButton>
+                                                <OpenInNewOutlinedIcon />
+                                            </IconButton>
+                                        </a>
+                                    </Tooltip>
+                                    <Tooltip title="关闭">
+                                        <IconButton onClick={() => { setOpenInfo(false) }}>
+                                            <CloseOutlinedIcon />
                                         </IconButton>
-                                    </a>
-                                </Tooltip>
+                                    </Tooltip>
+                                </>
                             }
                             title={info['uploader']['username']}
                             subheader={info['created_at']}
                         />
                         {
-                            !loadingImage ? <CardMedia
-                                component='img'
-                                height='225'
-                                image={info['thumbs']['large']}
-                            /> :
+                            !loadingImage ?
+                                <Box sx={{ margin: 0 }}>
+                                    <img style={{
+                                        display: 'block',
+                                        maxHeight: '30vh',
+                                        maxWidth: '100%',
+                                        margin: 'auto'
+                                    }}
+                                        src={info['thumbs']['original']} />
+                                </Box>
+                                :
                                 <>
                                     <Skeleton variant="text" sx={{ fontSize: '1rem' }} />
                                     <Skeleton variant="circular" width={50} height={50} />
@@ -68,25 +86,35 @@ export default function ImageInfo(props) {
                                     <Skeleton variant="rounded" width={400} height={50} />
                                 </>
                         }
-                        <CardContent>
-                            <Typography variant="h5" component="div">
-                                lalalalalalla
+                        <Box sx={{ textAlign: 'center' }}>
+                            <Chip sx={{ background: 'none' }} icon={<VisibilityIcon />} label={info['views']} />
+                            <Chip sx={{ background: 'none' }} icon={<FavoriteIcon />} label={info['favorites']} />
+                        </Box>
+                        <ColorBar colors={info['colors']} />
+                        <CardContent sx={{ height: '50vh', overflow: 'auto', textAlign: 'center' }}>
+
+                            <Typography variant="h6" component="div">
+                                元信息
                             </Typography>
-                            <Typography variant="h5" component="div">
-                                lalalalalalla
+                            <Typography sx={{ fontSize: 14 }} color="text.secondary">
+                                尺寸: {info['resolution']}
                             </Typography>
-                            <Typography variant="h5" component="div">
-                                lalalalalalla
+                            <Typography sx={{ fontSize: 14 }} color="text.secondary">
+                                大小: {(Number(info['file_size']) / 1048576).toFixed(2)}M
                             </Typography>
-                            <Typography variant="h5" component="div">
-                                lalalalalalla
+                            <Typography sx={{ fontSize: 14 }} color="text.secondary">
+                                格式: {info['file_type']}
                             </Typography>
-                            <Typography variant="h5" component="div">
-                                lalalalalalla
+                            <Typography sx={{ fontSize: 14 }} color="text.secondary">
+                                分类: {info['category']}
                             </Typography>
-                            <Typography variant="h5" component="div">
-                                lalalalalalla
+                            <Typography sx={{ fontSize: 14 }} color="text.secondary">
+                                分级: {info['purity']}
                             </Typography>
+                            <Typography variant="h6" component="div">
+                                标签
+                            </Typography>
+                            <TagsCloud tags={info['tags']} />
                         </CardContent>
                     </> :
                     <>
@@ -95,11 +123,18 @@ export default function ImageInfo(props) {
                                 <Skeleton variant="circular" width={32} height={32} />
                             }
                             action={
-                                <Tooltip title="转到Wallhaven">
-                                    <IconButton>
-                                        <OpenInNewOutlinedIcon />
-                                    </IconButton>
-                                </Tooltip>
+                                <>
+                                    <Tooltip title="转到Wallhaven">
+                                        <IconButton>
+                                            <OpenInNewOutlinedIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="关闭">
+                                        <IconButton onClick={() => { setOpenInfo(false) }}>
+                                            <CloseOutlinedIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                </>
                             }
                             title={<Skeleton variant="text" sx={{ width: '200px', fontSize: '1rem' }} />}
                             subheader={<Skeleton variant="text" sx={{ fontSize: '1rem' }} />}
@@ -116,7 +151,6 @@ export default function ImageInfo(props) {
                         </CardContent>
                     </>
             }
-
         </Card>
     )
 }

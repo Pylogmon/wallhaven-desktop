@@ -26,10 +26,13 @@ export default function ImageViewer(props) {
                 <img
                     style={{
                         display: 'block',
-                        height: 'calc(100vh - 64px - 56px)',
+                        maxHeight: 'calc(100vh - 64px - 56px)',
+                        maxWidth: '100%',
+                        height: meta['dimension_y'],
                         margin: 'auto'
                     }}
-                    src={meta['thumbs']['small']} />
+                    src={meta['thumbs']['original']} />
+
             </>
     )
 }
