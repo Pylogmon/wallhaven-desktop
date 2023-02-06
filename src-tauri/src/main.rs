@@ -24,7 +24,6 @@ fn main() {
         //绑定托盘事件
         .on_system_tray_event(|app, event| match event {
             SystemTrayEvent::MenuItemClick { id, .. } => match id.as_str() {
-                SAVE => on_save_click(),
                 UPDATE => on_update_click(),
                 OPEN => on_open_click(app),
                 AUTO => on_auto_click(app),

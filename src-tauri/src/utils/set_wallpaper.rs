@@ -1,7 +1,7 @@
 #[cfg(target_os = "windows")]
 use super::setter::windows;
 #[cfg(target_os = "linux")]
-use super::setter::{cinnamon, cutefish, deepin, gnome, kde, lxde, lxqt, mate, xfce};
+use super::setter::*;
 #[cfg(target_os = "linux")]
 use super::sys::DE;
 use super::sys::{get_de, get_os, OS};
@@ -16,7 +16,11 @@ pub fn set_wallpaper(file: &str) {
         }
     };
     match os {
-        OS::Windows => windows::set(file),
+        OS::Windows =>
+        {
+            #[cfg(target_os = "windows")]
+            windows::set(file)
+        }
         OS::Linux => {
             let _de = match get_de() {
                 Some(de) => de,
@@ -36,6 +40,7 @@ pub fn set_wallpaper(file: &str) {
                 DE::MATE => mate::set(file),
                 DE::LXQT => lxqt::set(file),
                 DE::LXDE => lxde::set(file),
+                DE::Yoyo => yoyo::set(file),
             }
         }
     }

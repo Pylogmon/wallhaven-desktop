@@ -18,3 +18,5 @@ pub mod mate;
 pub mod windows;
 #[cfg(target_os = "linux")]
 pub mod xfce;
+#[cfg(target_os = "linux")]
+pub mod yoyo;

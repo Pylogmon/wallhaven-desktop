@@ -1,19 +1,16 @@
 use tauri::{AppHandle, CustomMenuItem, Manager, SystemTray, SystemTrayMenu};
 
-pub const SAVE: &str = "save";
 pub const UPDATE: &str = "update";
 pub const OPEN: &str = "open";
 pub const AUTO: &str = "auto";
 pub const QUIT: &str = "quit";
 
 pub fn build_system_tray() -> SystemTray {
-    let save = CustomMenuItem::new(SAVE.to_string(), "保存当前壁纸");
     let update = CustomMenuItem::new(UPDATE.to_string(), "更换壁纸");
     let open = CustomMenuItem::new(OPEN.to_string(), "打开主界面");
     let auto = CustomMenuItem::new(AUTO.to_string(), "开启自动更换壁纸");
     let quit = CustomMenuItem::new(QUIT.to_string(), "退出");
     let tray_menu = SystemTrayMenu::new()
-        .add_item(save)
         .add_item(update)
         .add_item(open)
         .add_item(auto)
@@ -21,9 +18,6 @@ pub fn build_system_tray() -> SystemTray {
     SystemTray::new().with_menu(tray_menu)
 }
 
-pub fn on_save_click() {
-    //TODO
-}
 pub fn on_update_click() {
     //TODO
 }

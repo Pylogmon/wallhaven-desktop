@@ -15,6 +15,7 @@ pub enum DE {
     MATE,
     LXQT,
     LXDE,
+    Yoyo,
 }
 
 pub fn get_os() -> Option<OS> {
@@ -41,6 +42,7 @@ pub fn get_de() -> Option<DE> {
         "MATE" => Some(DE::MATE),
         "LXQT" => Some(DE::LXQT),
         "LXDE" => Some(DE::LXDE),
+        "Yoyo" => Some(DE::Yoyo),
         _ => None,
     }
 }
