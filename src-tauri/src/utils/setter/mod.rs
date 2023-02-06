@@ -12,6 +12,8 @@ pub mod kde;
 pub mod lxde;
 #[cfg(target_os = "linux")]
 pub mod lxqt;
+#[cfg(target_os = "macos")]
+pub mod macos;
 #[cfg(target_os = "linux")]
 pub mod mate;
 #[cfg(target_os = "windows")]

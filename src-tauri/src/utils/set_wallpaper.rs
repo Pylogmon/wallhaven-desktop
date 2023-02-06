@@ -1,6 +1,3 @@
-#[cfg(target_os = "windows")]
-use super::setter::windows;
-#[cfg(target_os = "linux")]
 use super::setter::*;
 #[cfg(target_os = "linux")]
 use super::sys::DE;
@@ -20,6 +17,11 @@ pub fn set_wallpaper(file: &str) {
         {
             #[cfg(target_os = "windows")]
             windows::set(file)
+        }
+        OS::MacOS =>
+        {
+            #[cfg(target_os = "macos")]
+            macos::set(file)
         }
         OS::Linux => {
             let _de = match get_de() {

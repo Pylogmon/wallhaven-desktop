@@ -3,6 +3,7 @@ use std::env;
 pub enum OS {
     Windows,
     Linux,
+    MacOS,
 }
 
 pub enum DE {
@@ -23,6 +24,7 @@ pub fn get_os() -> Option<OS> {
     match os {
         "windows" => Some(OS::Windows),
         "linux" => Some(OS::Linux),
+        "macos" => Some(OS::MacOS),
         _ => None,
     }
 }
