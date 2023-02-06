@@ -17,7 +17,7 @@ export default function ImageCard(props) {
     }
     return (
         <>
-            <Card sx={{ maxWidth: 250, margin: '8px' }} >
+            <Card sx={{ width: 200, margin: '8px' }} >
                 <CardActionArea onClick={() => { setOpenImage(true) }}>
                     {!loading ? <CardMedia
                         component='img'

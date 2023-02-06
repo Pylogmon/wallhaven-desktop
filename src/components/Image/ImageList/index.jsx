@@ -31,7 +31,7 @@ export default function ImageList() {
         !loading ? (
             imgList['data'].length !== 0 ?
                 <>
-                    <Grid container sx={{ justifyContent: 'space-around', height: 'calc(100vh - 155px)', overflow: 'auto', margin: '0 30px', width: 'calc(100% - 60px)' }} >
+                    <Grid container sx={{ justifyContent: 'space-around', height: 'calc(100vh - 166px)', overflow: 'auto', margin: '0 30px', width: 'calc(100% - 60px)' }} >
                         {
                             imgList['data'].map((x) => {
                                 return (
