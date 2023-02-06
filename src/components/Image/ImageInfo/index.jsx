@@ -94,7 +94,7 @@ export default function ImageInfo(props) {
                         <CardContent sx={{ height: '50vh', overflow: 'auto', textAlign: 'center' }}>
 
                             <Typography variant="h6" component="div">
-                                元信息
+                                基本信息
                             </Typography>
                             <Typography sx={{ fontSize: 14 }} color="text.secondary">
                                 尺寸: {info['resolution']}

@@ -33,7 +33,7 @@ export default function ImageCard(props) {
                     }
                 </CardActionArea>
                 <CardActions sx={{ justifyContent: 'space-between' }}>
-                    <ImageActions setOpenInfo={setOpenInfo} />
+                    <ImageActions setOpenInfo={setOpenInfo} meta={meta} />
                 </CardActions>
             </Card>
             <Dialog
@@ -46,7 +46,7 @@ export default function ImageCard(props) {
                     <ImageViewer meta={meta} />
                 </DialogContent>
                 <DialogActions sx={{ justifyContent: 'space-between' }}>
-                    <ImageActions setOpenInfo={setOpenInfo} />
+                    <ImageActions setOpenInfo={setOpenInfo} meta={meta} />
                     <Tooltip title="关闭">
                         <IconButton onClick={() => { setOpenImage(false) }}>
                             <CloseOutlinedIcon />

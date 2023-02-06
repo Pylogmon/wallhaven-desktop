@@ -8,9 +8,13 @@
   },
   "package": {
     "productName": "wallhaven-desktop",
-    "version": "0.0.0"
+    "version": "0.0.1"
   },
   "tauri": {
+    "systemTray": {
+      "iconPath": "icons/icon.png",
+      "iconAsTemplate": true
+    },
     "allowlist": {
       "all": false,
       "http": {
@@ -26,8 +30,8 @@
     },
     "bundle": {
       "active": true,
-      "category": "DeveloperTool",
-      "copyright": "",
+      "category": "Entertainment",
+      "copyright": "GPLv3",
       "deb": {
         "depends": []
       },
@@ -39,7 +43,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "wallhaven-desktop",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -67,9 +71,12 @@
       {
         "fullscreen": false,
         "height": 600,
+        "width": 800,
         "resizable": true,
         "title": "wallhaven-desktop",
-        "width": 800
+        "label": "main",
+        "minHeight": 600,
+        "minWidth": 800
       }
     ]
   }
