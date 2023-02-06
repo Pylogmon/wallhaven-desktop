@@ -26,6 +26,9 @@
       "shell": {
         "all": false,
         "open": true
+      },
+      "clipboard": {
+        "all": true
       }
     },
     "bundle": {
