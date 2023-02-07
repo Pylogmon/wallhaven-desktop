@@ -37,7 +37,9 @@ pub fn get_de() -> Option<DE> {
     match de.as_str() {
         "KDE" => Some(DE::KDE),
         "Deepin" => Some(DE::Deepin),
-        "Gnome" | "ubuntu:Gnome" => Some(DE::Gnome),
+        "Gnome" => Some(DE::Gnome),
+        "ubuntu:Gnome" => Some(DE::Gnome),
+        "ubuntu:GNOME" => Some(DE::Gnome),
         "X-Cinnamon" => Some(DE::Cinnamon),
         "Cutefish" => Some(DE::Cutefish),
         "XFCE" => Some(DE::XFCE),
