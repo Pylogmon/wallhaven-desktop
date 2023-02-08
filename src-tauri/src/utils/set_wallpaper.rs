@@ -18,7 +18,7 @@ pub fn set_wallpaper(file: &str) -> Result<(), String> {
         OS::Linux => {
             let de = match get_de() {
                 Some(de) => de,
-                None => Err("不支持的桌面环境"),
+                None => return Err("不支持的桌面环境".to_string()),
             };
 
             match de {

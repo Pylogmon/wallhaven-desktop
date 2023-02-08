@@ -12,7 +12,7 @@ pub fn set(file: &str) -> Result<(), String> {
         Duration::from_millis(5000),
     );
     match settings.method_call("com.cutefish.Theme", "setWallpaper", (file,)) {
-        Ok(_) => Ok(()),
+        Ok(()) => return Ok(()),
         Err(e) => Err(format!("壁纸设置失败 {}", e.to_string())),
     }
 }

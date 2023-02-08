@@ -19,10 +19,10 @@ pub fn set(file: &str) -> Result<(), String> {
             screens.push(screen[0].to_string())
         }
     }
-    match Connection::new_session() {
-        Ok(_) => {}
+    let session = match Connection::new_session() {
+        Ok(v) => v,
         Err(e) => return Err(format!("new_session {}", e.to_string())),
-    }
+    };
     let apperance = session.with_proxy(
         "com.deepin.daemon.Appearance",
         "/com/deepin/daemon/Appearance",
@@ -34,7 +34,7 @@ pub fn set(file: &str) -> Result<(), String> {
             "SetMonitorBackground",
             (s, file),
         ) {
-            Ok(_) => {}
+            Ok(()) => {}
             Err(e) => return Err(format!("壁纸设置失败 {}", e.to_string())),
         }
     }

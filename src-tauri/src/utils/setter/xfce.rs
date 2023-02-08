@@ -1,6 +1,6 @@
 use std::process::Command;
 
-pub fn set(file: &str) {
+pub fn set(file: &str) -> Result<(), String> {
     let output = match Command::new("xfconf-query")
         .arg("-c")
         .arg("xfce4-desktop")
@@ -10,7 +10,7 @@ pub fn set(file: &str) {
         .output()
     {
         Ok(v) => v,
-        Err(e) => return Err(e.string()),
+        Err(e) => return Err(e.to_string()),
     };
     let output = match String::from_utf8(output.stdout) {
         Ok(v) => v,
@@ -29,7 +29,7 @@ pub fn set(file: &str) {
                 .output()
             {
                 Ok(_) => {}
-                Err(e) => Err(format!("壁纸设置失败 {}", e.to_string())),
+                Err(e) => return Err(format!("壁纸设置失败 {}", e.to_string())),
             }
         }
     }

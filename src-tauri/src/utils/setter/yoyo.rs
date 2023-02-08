@@ -8,7 +8,7 @@ pub fn set(file: &str) -> Result<(), String> {
     };
     let settings = session.with_proxy("com.yoyo.Settings", "/Theme", Duration::from_millis(5000));
     match settings.method_call("com.yoyo.Theme", "setWallpaper", (file,)) {
-        Ok(_) => {}
+        Ok(()) => Ok(()),
         Err(e) => Err(format!("壁纸设置失败 {}", e.to_string())),
     }
 }

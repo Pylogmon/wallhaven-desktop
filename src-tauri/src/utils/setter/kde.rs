@@ -24,7 +24,7 @@ pub fn set(file: &str) -> Result<(), String> {
         Duration::from_millis(5000),
     );
     match shell.method_call("org.kde.PlasmaShell", "evaluateScript", (&scripts,)) {
-        Ok(_) => {}
+        Ok(()) => Ok(()),
         Err(e) => Err(format!("壁纸设置失败 {}", e.to_string())),
     }
 }

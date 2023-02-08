@@ -40,6 +40,7 @@ pub fn get_de() -> Option<DE> {
         "KDE" => Some(DE::KDE),
         "Deepin" => Some(DE::Deepin),
         "Gnome" => Some(DE::Gnome),
+        "GNOME" => Some(DE::Gnome),
         "ubuntu:Gnome" => Some(DE::Gnome),
         "ubuntu:GNOME" => Some(DE::Gnome),
         "X-Cinnamon" => Some(DE::Cinnamon),
