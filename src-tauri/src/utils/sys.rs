@@ -6,6 +6,7 @@ pub enum OS {
     MacOS,
 }
 
+#[cfg(target_os = "linux")]
 pub enum DE {
     Deepin,
     KDE,
@@ -29,6 +30,7 @@ pub fn get_os() -> Option<OS> {
     }
 }
 
+#[cfg(target_os = "linux")]
 pub fn get_de() -> Option<DE> {
     let de = match env::var("XDG_CURRENT_DESKTOP") {
         Ok(de) => de,

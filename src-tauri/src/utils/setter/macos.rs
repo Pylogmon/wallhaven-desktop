@@ -1,13 +1,16 @@
 use std::process::Command;
 
-pub fn set(file: &str) {
+pub fn set(file: &str) -> Result<(), String> {
     let command_str = format!(
         "\'tell application \"Finder\" to set desktop picture to POSIX file \"{}\"\'",
         file
     );
-    let _ = Command::new("osascript")
+    match Command::new("osascript")
         .arg("-e")
         .arg(command_str)
         .output()
-        .unwrap();
+    {
+        Ok(_) => Ok(()),
+        Err(e) => Err(e.to_string()),
+    }
 }

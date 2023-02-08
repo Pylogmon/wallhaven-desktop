@@ -1,38 +1,27 @@
 use super::setter::*;
 #[cfg(target_os = "linux")]
-use super::sys::DE;
-use super::sys::{get_de, get_os, OS};
+use super::sys::{get_de, DE};
+use super::sys::{get_os, OS};
 
 #[tauri::command]
-pub fn set_wallpaper(file: &str) {
+pub fn set_wallpaper(file: &str) -> Result<(), String> {
     let os = match get_os() {
         Some(os) => os,
-        None => {
-            println!("不支持的操作系统");
-            return;
-        }
+        None => return Err("不支持的操作系统".to_string()),
     };
     match os {
-        OS::Windows =>
-        {
-            #[cfg(target_os = "windows")]
-            windows::set(file)
-        }
-        OS::MacOS =>
-        {
-            #[cfg(target_os = "macos")]
-            macos::set(file)
-        }
+        #[cfg(target_os = "windows")]
+        OS::Windows => windows::set(file),
+        #[cfg(target_os = "macos")]
+        OS::MacOS => macos::set(file),
+        #[cfg(target_os = "linux")]
         OS::Linux => {
-            let _de = match get_de() {
+            let de = match get_de() {
                 Some(de) => de,
-                None => {
-                    println!("不支持的桌面环境");
-                    return;
-                }
+                None => Err("不支持的桌面环境"),
             };
-            #[cfg(target_os = "linux")]
-            match _de {
+
+            match de {
                 DE::Deepin => deepin::set(file),
                 DE::KDE => kde::set(file),
                 DE::Gnome => gnome::set(file),
@@ -45,5 +34,6 @@ pub fn set_wallpaper(file: &str) {
                 DE::Yoyo => yoyo::set(file),
             }
         }
+        _ => Ok(()),
     }
 }

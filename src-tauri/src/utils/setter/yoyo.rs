@@ -1,10 +1,14 @@
 use dbus::blocking::Connection;
 use std::time::Duration;
 
-pub fn set(file: &str) {
-    let session = Connection::new_session().unwrap();
+pub fn set(file: &str) -> Result<(), String> {
+    let session = match Connection::new_session() {
+        Ok(v) => v,
+        Err(e) => return Err(format!("new_session {}", e.to_string())),
+    };
     let settings = session.with_proxy("com.yoyo.Settings", "/Theme", Duration::from_millis(5000));
-    return settings
-        .method_call("com.yoyo.Theme", "setWallpaper", (file,))
-        .unwrap();
+    match settings.method_call("com.yoyo.Theme", "setWallpaper", (file,)) {
+        Ok(_) => {}
+        Err(e) => Err(format!("壁纸设置失败 {}", e.to_string())),
+    }
 }

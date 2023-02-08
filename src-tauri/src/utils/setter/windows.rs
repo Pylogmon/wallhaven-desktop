@@ -6,23 +6,25 @@ use windows::{
     },
 };
 
-pub fn set(file: &str) {
+pub fn set(file: &str) -> Result<(), String> {
     // IDesktopWallpaper 使用方法：
     // https://stackoverflow.com/questions/74171921/not-sure-how-to-use-idesktopwallpaper
     // Initialize COM
-    unsafe { CoInitialize(None) }.unwrap();
+    match unsafe { CoInitialize(None) } {
+        Ok(_) => {}
+        Err(e) => return Err(e.to_string()),
+    };
     // Create a DesktkopWallpaper object and return its IDesktopWallpaper interface
     let wallpaper: IDesktopWallpaper =
-        unsafe { CoCreateInstance(&DesktopWallpaper, None, CLSCTX_ALL) }.unwrap();
+        match unsafe { CoCreateInstance(&DesktopWallpaper, None, CLSCTX_ALL) } {
+            Ok(v) => v,
+            Err(e) => return Err(e.to_string()),
+        };
 
     unsafe {
         match wallpaper.SetWallpaper(None, &HSTRING::from(file)) {
-            Ok(_) => {
-                println!("The wallpaper setting is successful!")
-            }
-            Err(e) => {
-                println!("{}", e)
-            }
+            Ok(_) => Ok(()),
+            Err(e) => Err(format!("壁纸设置失败 {}", e.to_string())),
         }
     }
 }
