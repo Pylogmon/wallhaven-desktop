@@ -47,7 +47,8 @@
         "icons/icon.ico"
       ],
       "identifier": "wallhaven-desktop",
-      "longDescription": "",
+      "publisher": "ambition-echo",
+      "longDescription": "Unofficial desktop client for wallhaven.cc, which is used to easily browse wallhaven wallpapers and set them as desktop wallpapers with one click",
       "macOS": {
         "entitlements": null,
         "exceptionDomain": "",
@@ -56,7 +57,7 @@
         "signingIdentity": null
       },
       "resources": [],
-      "shortDescription": "",
+      "shortDescription": "Unofficial desktop client for wallhaven.cc",
       "targets": "all",
       "windows": {
         "certificateThumbprint": null,
