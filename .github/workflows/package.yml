@@ -29,9 +29,9 @@ jobs:
 
       - name: Change Version
         run: |
-          sed -i "s/\"version\":.*/\"version\": \"$(git describe --tags |  sed  's/\([^-]*-g\)/r\1/;s/-/./g')\",/g" package.json
-          sed -i "s/\"version\":.*/\"version\": \"$(git describe --tags |  sed  's/\([^-]*-g\)/r\1/;s/-/./g')\"/g" src-tauri/tauri.conf.json
-          sed -i "s/version = \"0.0.0\"/version = \"$(git describe --tags |  sed  's/\([^-]*-g\)/r\1/;s/-/./g')\"/g" src-tauri/Cargo.toml
+          sed -i "s/\"version\":.*/\"version\": \"$(git describe --tags)\",/g" package.json
+          sed -i "s/\"version\":.*/\"version\": \"$(git describe --tags)\"/g" src-tauri/tauri.conf.json
+
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
