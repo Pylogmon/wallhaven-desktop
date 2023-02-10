@@ -1,10 +1,10 @@
 [package]
 name = "wallhaven-desktop"
 version = "0.0.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
+description = "wallhaven.cc's unofficial desktop client, which is used to easily browse wallhaven wallpapers and set them as desktop wallpapers with one click"
+authors = ["ambition-echo"]
+license = "GPLv3"
+repository = "https://github.com/ambition-echo/wallhaven-desktop"
 edition = "2021"
 rust-version = "1.57"
 
