@@ -62,7 +62,7 @@ jobs:
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/download-artifact@v3
-      if: matrix.platform != 'windows-latest'
+        if: matrix.platform != 'windows-latest'
         id: download
         with:
           name: source
