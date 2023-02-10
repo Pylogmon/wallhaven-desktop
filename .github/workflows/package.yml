@@ -8,15 +8,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Git Version
-        id: version
-        uses: codacy/git-version@2.7.1
+      - name: Install git
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git
 
       - name: Change Version
         run: |
-          sed -i "s/\"version\":.*/\"version\": \"${{ steps.version.outputs.version }}\",/g" package.json
-          sed -i "s/\"version\":.*/\"version\": \"${{ steps.version.outputs.version }}\"/g" src-tauri/tauri.conf.json
-          echo ${{ steps.version.outputs.version }}
+          sed -i "s/\"version\":.*/\"version\": \"$(git describe --tags | sed 's/\(r[0-9]\)-/\1./')\",/g" package.json
+          sed -i "s/\"version\":.*/\"version\": \"$(git describe --tags | sed 's/\(r[0-9]\)-/\1./')\"/g" src-tauri/tauri.conf.json
+          echo $(git describe --tags | sed 's/\(r[0-9]\)-/\1./')
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
