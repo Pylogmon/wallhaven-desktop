@@ -15,9 +15,9 @@ jobs:
 
       - name: Change Version
         run: |
-          sed -i "s/\"version\":.*/\"version\": \"$(git describe --tags | sed 's/\(r[0-9]\)-/\1./')\",/g" package.json
-          sed -i "s/\"version\":.*/\"version\": \"$(git describe --tags | sed 's/\(r[0-9]\)-/\1./')\"/g" src-tauri/tauri.conf.json
-          echo $(git describe --tags | sed 's/\(r[0-9]\)-/\1./')
+          sed -i "s/\"version\":.*/\"version\": \"$(git describe --tags |  sed  's/\([^-]*-g\)/r\1/;s/-/./g' |sed 's/.\(r[0-9]\)/\-\1/')\",/g" package.json
+          sed -i "s/\"version\":.*/\"version\": \"$(git describe --tags |  sed  's/\([^-]*-g\)/r\1/;s/-/./g' |sed 's/.\(r[0-9]\)/\-\1/')\"/g" src-tauri/tauri.conf.json
+          echo $(git describe --tags |  sed  's/\([^-]*-g\)/r\1/;s/-/./g' |sed 's/.\(r[0-9]\)/\-\1/')
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
