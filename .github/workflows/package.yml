@@ -1,0 +1,61 @@
+name: Package
+on: push
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [macos-latest, ubuntu-20.04, windows-latest]
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 19
+      - name: Install Rust Stable
+        uses: dtolnay/rust-toolchain@stable
+      - name: Install Tauri Dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-20.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Build and Package
+        run: pnpm tauri build
+      - name: Upload Artifacts
+        if: matrix.platform == 'ubuntu-20.04'
+        uses: actions/upload-artifact@v3
+        with:
+          name: wallhaven-desktop.deb
+          path: src-tauri/target/release/bundle/deb/*.deb
+          if-no-files-found: error
+      - name: Upload Artifacts
+        if: matrix.platform == 'ubuntu-20.04'
+        uses: actions/upload-artifact@v3
+        with:
+          name: wallhaven-desktop.Appimage
+          path: src-tauri/target/release/bundle/appimage/*.appimage
+          if-no-files-found: error
+      - name: Upload Artifacts
+        if: matrix.platform == 'windows-latest'
+        uses: actions/upload-artifact@v3
+        with:
+          name: wallhaven-desktop.msi
+          path: src-tauri/target/release/bundle/msi/*.msi
+          if-no-files-found: error
+      - name: Upload Artifacts
+        if: matrix.platform == 'macos-latest'
+        uses: actions/upload-artifact@v3
+        with:
+          name: wallhaven-desktop.dmg
+          path: src-tauri/target/release/bundle/dmg/*.dmg
+          if-no-files-found: error
