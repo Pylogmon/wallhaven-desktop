@@ -8,20 +8,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Install Git
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y git
+      - name: Git Version
+        id: version
+        uses: codacy/git-version@2.7.1
+        with:
+          dev-branch: master
 
       - name: Change Version
         run: |
-          sed -i "s/\"version\":.*/\"version\": \"$(git describe --tags)\",/g" package.json
-          sed -i "s/\"version\":.*/\"version\": \"$(git describe --tags)\"/g" src-tauri/tauri.conf.json
+          sed -i "s/\"version\":.*/\"version\": \"${{ steps.version.outputs.version }}\",/g" package.json
+          sed -i "s/\"version\":.*/\"version\": \"${{ steps.version.outputs.version }}\"/g" src-tauri/tauri.conf.json
+          echo ${{ steps.version.outputs.version }}
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: New_Repo
+          name: source
           path: ./*
           if-no-files-found: error
 
@@ -37,7 +39,7 @@ jobs:
       - uses: actions/download-artifact@v3
         id: download
         with:
-          name: New_Repo
+          name: source
           
       - name: Setup Nodejs
         uses: actions/setup-node@v3
