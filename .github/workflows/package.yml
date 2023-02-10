@@ -25,6 +25,7 @@ jobs:
           if-no-files-found: error
 
   build:
+    needs: change-version
     strategy:
       fail-fast: false
       matrix:
