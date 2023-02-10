@@ -29,6 +29,21 @@ jobs:
           name: source
           path: ./*
           if-no-files-found: error
+      
+      - name: Change Version for Windows
+        run: |
+          sed -i "s/\"version\":.*/\"version\": \"$(git describe --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g' | sed 's/.r.*//g')\",/g" package.json
+
+          sed -i "s/\"version\":.*/\"version\": \"$(git describe --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g' | sed 's/.r.*//g')\"/g" src-tauri/tauri.conf.json
+
+          echo $(git describe --tags | sed 's/\([^-]*-g\)/r\1/;s/-/./g' | sed 's/.r.*//g')
+
+      - name: Upload Artifacts for Windows
+        uses: actions/upload-artifact@v3
+        with:
+          name: source-win
+          path: ./*
+          if-no-files-found: error
 
   build:
     needs: change-version
@@ -36,13 +51,27 @@ jobs:
       fail-fast: false
       matrix:
         platform: [macos-latest, ubuntu-20.04, windows-latest]
+        include:
+          - platform: macos-latest
+            bundle: dmg
+          - platform: ubuntu-20.04
+            bundle: deb
+          - platform: windows-latest
+            bundle: msi
 
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/download-artifact@v3
+      if: matrix.platform != 'windows-latest'
         id: download
         with:
           name: source
+      
+      - uses: actions/download-artifact@v3
+        if: matrix.platform == 'windows-latest'
+        id: download
+        with:
+          name: source-win
           
       - name: Setup Nodejs
         uses: actions/setup-node@v3
@@ -57,8 +86,6 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
-          echo ${{steps.download.outputs.download-path}}
-          cd ${{steps.download.outputs.download-path}}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -71,12 +98,11 @@ jobs:
       - name: Build and Package
         run: pnpm tauri build
 
-      - name: Upload Artifacts(deb)
-        if: matrix.platform == 'ubuntu-20.04'
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: wallhaven-desktop.deb
-          path: ${{steps.download.outputs.download-path}}/src-tauri/target/release/bundle/deb/*.deb
+          name: wallhaven-desktop.${{ matrix.bundle }}
+          path: src-tauri/target/release/bundle/${{ matrix.bundle }}/*.${{ matrix.bundle }}
           if-no-files-found: error
 
       - name: Upload Artifacts(appimage)
@@ -84,21 +110,23 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: wallhaven-desktop.Appimage
-          path: ${{steps.download.outputs.download-path}}/src-tauri/target/release/bundle/appimage/*.AppImage
+          path: src-tauri/target/release/bundle/appimage/*.AppImage
           if-no-files-found: error
 
-      - name: Upload Artifacts(msi)
-        if: matrix.platform == 'windows-latest'
-        uses: actions/upload-artifact@v3
+      - name: Upload Release
+        if: startsWith(github.ref, 'refs/tags')
+        uses: svenstaro/upload-release-action@v2
         with:
-          name: wallhaven-desktop.msi
-          path: ${{steps.download.outputs.download-path}}/src-tauri/target/release/bundle/msi/*.msi
-          if-no-files-found: error
-
-      - name: Upload Artifacts(dmg)
-        if: matrix.platform == 'macos-latest'
-        uses: actions/upload-artifact@v3
+          repo_token: ${{ secrets.TOKEN }}
+          file: src-tauri/target/release/bundle/${{ matrix.bundle }}/*.${{ matrix.bundle }}
+          tag: ${{ github.ref }}
+          overwrite: true
+      
+      - name: Upload Release(appimage)
+        if: startsWith(github.ref, 'refs/tags')
+        uses: svenstaro/upload-release-action@v2
         with:
-          name: wallhaven-desktop.dmg
-          path: ${{steps.download.outputs.download-path}}/src-tauri/target/release/bundle/dmg/*.dmg
-          if-no-files-found: error
+          repo_token: ${{ secrets.TOKEN }}
+          file: src-tauri/target/release/bundle/appimage/*.AppImage
+          tag: ${{ github.ref }}
+          overwrite: true
