@@ -63,13 +63,11 @@ jobs:
     steps:
       - uses: actions/download-artifact@v3
         if: matrix.platform != 'windows-latest'
-        id: download
         with:
           name: source
       
       - uses: actions/download-artifact@v3
         if: matrix.platform == 'windows-latest'
-        id: download
         with:
           name: source-win
           
