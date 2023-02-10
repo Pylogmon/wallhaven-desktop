@@ -31,28 +31,28 @@ jobs:
         run: pnpm install
       - name: Build and Package
         run: pnpm tauri build
-      - name: Upload Artifacts
+      - name: Upload Artifacts(deb)
         if: matrix.platform == 'ubuntu-20.04'
         uses: actions/upload-artifact@v3
         with:
           name: wallhaven-desktop.deb
           path: src-tauri/target/release/bundle/deb/*.deb
           if-no-files-found: error
-      - name: Upload Artifacts
+      - name: Upload Artifacts(appimage)
         if: matrix.platform == 'ubuntu-20.04'
         uses: actions/upload-artifact@v3
         with:
           name: wallhaven-desktop.Appimage
-          path: src-tauri/target/release/bundle/appimage/*.appimage
+          path: src-tauri/target/release/bundle/appimage/*.AppImage
           if-no-files-found: error
-      - name: Upload Artifacts
+      - name: Upload Artifacts(msi)
         if: matrix.platform == 'windows-latest'
         uses: actions/upload-artifact@v3
         with:
           name: wallhaven-desktop.msi
           path: src-tauri/target/release/bundle/msi/*.msi
           if-no-files-found: error
-      - name: Upload Artifacts
+      - name: Upload Artifacts(dmg)
         if: matrix.platform == 'macos-latest'
         uses: actions/upload-artifact@v3
         with:
