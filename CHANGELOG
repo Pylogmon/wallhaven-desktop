@@ -1,0 +1,18 @@
+## 0.0.0 (2023-02-11)
+
+### New feature:
+
+- 完善错误处理([`8d8262f`](https://github.com/ambition-echo/wallhaven-desktop/commit/8d8262f3ca3028738b5ca2d24a99e5502f5cdd69)) (by ambition-echo)
+- 简单实现设置页面([`009b181`](https://github.com/ambition-echo/wallhaven-desktop/commit/009b181a8a801ff802a450efb8f68cb92621f669)) (by ambition_echo)
+- 支持MacOS([`394f28c`](https://github.com/ambition-echo/wallhaven-desktop/commit/394f28cc0d6403a4e4193ab951233fd1911f8671)) (by ambition_echo)
+- 添加YoyoOS支持([`036cdf0`](https://github.com/ambition-echo/wallhaven-desktop/commit/036cdf0e545501a1f13b9ca3001b7a51b06dd315)) (by ambition_echo)
+- 添加点击复制颜色值功能([`f15ed0a`](https://github.com/ambition-echo/wallhaven-desktop/commit/f15ed0a930656d0850733a6f1fbcded21b7a609f)) (by ambition-echo)
+- 完成下载与设置壁纸功能([`9e0b9f5`](https://github.com/ambition-echo/wallhaven-desktop/commit/9e0b9f53e1be4e6897af91b4b376931988b8f374)) (by ambition-echo)
+- 完善图片详细信息内容([`acf5a90`](https://github.com/ambition-echo/wallhaven-desktop/commit/acf5a905000492174051c9921951df6ac29407c2)) (by ambition-echo)
+- 基本完成图片信息查看功能([`f25bbce`](https://github.com/ambition-echo/wallhaven-desktop/commit/f25bbce517d89dc4080b5b48f77edbb23a9ff6f2)) (by ambition-echo)
+- 完善筛选项及图片加载动画([`d5abb20`](https://github.com/ambition-echo/wallhaven-desktop/commit/d5abb2068d3b4895a116c4297533782dd74b0311)) (by ambition-echo)
+
+### Bugs fixed:
+
+- 修复ubuntu识别错误的问题([`cae8606`](https://github.com/ambition-echo/wallhaven-desktop/commit/cae860684d3fa4ebd58fd59c114d1b89de7315fe)) (by ambition-echo)
+- 优化图片排版([`e3752d9`](https://github.com/ambition-echo/wallhaven-desktop/commit/e3752d9c782d5208759ee8a22effedb0ec955b4d)) (by ambition_echo)
