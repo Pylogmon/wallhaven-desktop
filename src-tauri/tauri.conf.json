@@ -23,6 +23,12 @@
           "https://wallhaven.cc/api/v1/*"
         ]
       },
+      "fs": {
+        "all": true,
+        "scope": [
+          "$APPCONFIG/*"
+        ]
+      },
       "shell": {
         "all": false,
         "open": true
@@ -46,8 +52,8 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "wallhaven-desktop",
-      "publisher": "ambition-echo",
+      "identifier": "cn.pylogmon.wallhavenDesktop",
+      "publisher": "pylogmon",
       "longDescription": "Unofficial desktop client for wallhaven.cc, which is used to easily browse wallhaven wallpapers and set them as desktop wallpapers with one click",
       "macOS": {
         "entitlements": null,

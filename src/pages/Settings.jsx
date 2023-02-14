@@ -1,8 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Box, TextField, Tooltip, Button, InputAdornment, Divider } from '@mui/material'
 import SettingList from '../components/Setting/SettingList'
 import SettingItem from '../components/Setting/SettingItem'
+
+
 export default function Settings() {
+    const [apikey, setApiKey] = useState();
+    const [extFile, setExtFile] = useState();
+
+    function saveConfig() {
+        //写入redux
+        //写入文件
+    }
+
     return (
         <Box sx={{
             width: '100%',
@@ -15,6 +25,8 @@ export default function Settings() {
                     <Tooltip title="注册wallhaven.cc以获取apikey">
                         <TextField
                             size="small"
+                            value={apikey}
+                            onChange={(e) => { setApiKey(e.target.value) }}
                             sx={{ width: 250 }}
                         />
                     </Tooltip>

@@ -3,15 +3,18 @@
     windows_subsystem = "windows"
 )]
 mod cmds;
+mod init;
 mod system_tray;
 mod utils;
 
 use cmds::*;
+use init::check_config_file;
 use system_tray::*;
 use tauri::SystemTrayEvent;
 use utils::set_wallpaper::set_wallpaper;
 
 fn main() {
+    check_config_file();
     tauri::Builder::default()
         //注册js调用函数
         .invoke_handler(tauri::generate_handler![
