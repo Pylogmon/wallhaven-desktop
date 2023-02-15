@@ -5,6 +5,7 @@ import { fetch } from '@tauri-apps/api/http';
 import PubSub from 'pubsub-js'
 import { nanoid } from 'nanoid';
 import ImageCard from '../ImageCard';
+import { get } from '../../../utils/config';
 
 export default function ImageList() {
     const [search, setSearch] = useState({});
@@ -16,7 +17,7 @@ export default function ImageList() {
         fetch('https://wallhaven.cc/api/v1/search', {
             method: 'GET',
             timeout: 30,
-            query: search,
+            query: { ...search, ...{ apikey: get('apikey', '') } },
         }).then(
             res => {
                 setImgList(res.data);

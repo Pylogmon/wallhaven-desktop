@@ -2,15 +2,15 @@ import React, { useState } from 'react'
 import { Box, TextField, Tooltip, Button, InputAdornment, Divider } from '@mui/material'
 import SettingList from '../components/Setting/SettingList'
 import SettingItem from '../components/Setting/SettingItem'
-
+import { get, set, writeConfig } from '../utils/config'
 
 export default function Settings() {
-    const [apikey, setApiKey] = useState();
-    const [extFile, setExtFile] = useState();
+    const [apikey, setApikey] = useState(get('apikey', ''));
+    const [extFile, setExtFile] = useState(get('extFile', ''));
 
     function saveConfig() {
-        //写入redux
-        //写入文件
+        set('apikey', apikey);
+        writeConfig();
     }
 
     return (
@@ -26,7 +26,7 @@ export default function Settings() {
                         <TextField
                             size="small"
                             value={apikey}
-                            onChange={(e) => { setApiKey(e.target.value) }}
+                            onChange={(e) => { setApikey(e.target.value) }}
                             sx={{ width: 250 }}
                         />
                     </Tooltip>
@@ -40,7 +40,7 @@ export default function Settings() {
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
-                                        <Button size="small">浏览</Button>
+                                        <Button size="small" onClick={saveConfig}>浏览</Button>
                                     </InputAdornment>
                                 ),
                             }}
@@ -48,6 +48,7 @@ export default function Settings() {
                     </Tooltip>
                 </SettingItem>
             </SettingList>
+
         </Box>
     )
 }

@@ -7,6 +7,7 @@ import OpenInNewOutlinedIcon from '@mui/icons-material/OpenInNewOutlined';
 import { fetch } from '@tauri-apps/api/http';
 import ColorBar from './ColorBar';
 import TagsCloud from './TagsCloud';
+import { get } from '../../../utils/config';
 
 export default function ImageInfo(props) {
     const { setOpenInfo, imageId } = props;
@@ -25,6 +26,7 @@ export default function ImageInfo(props) {
     }
     useEffect(() => {
         fetch(`https://wallhaven.cc/api/v1/w/${imageId}`, {
+            query: { apikey: get('apikey', '') },
             method: 'GET',
             timeout: 30,
         }).then(
