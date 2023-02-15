@@ -7,30 +7,58 @@ import { nanoid } from 'nanoid';
 import ImageCard from '../ImageCard';
 import { get } from '../../../utils/config';
 
-export default function ImageList() {
+export default function ImageList(props) {
+    const { type } = props;
+    const [page, setPage] = useState('1');
+    const [collect, setCollect] = useState(0);
     const [search, setSearch] = useState({});
     const [imgList, setImgList] = useState([]);
     const [loading, setLoading] = useState(true);
     const { palette: { background } } = useTheme();
     useEffect(() => {
         setLoading(true)
-        fetch('https://wallhaven.cc/api/v1/search', {
-            method: 'GET',
-            timeout: 30,
-            query: { ...search, ...{ apikey: get('apikey', '') } },
-        }).then(
-            res => {
-                setImgList(res.data);
-                setLoading(false);
-            }
-        )
-    }, [search]);
+        if (type === 'search') {
+            fetch('https://wallhaven.cc/api/v1/search', {
+                method: 'GET',
+                timeout: 30,
+                query: { ...search, ...{ apikey: get('apikey', ''), page } },
+            }).then(
+                res => {
+                    if ('data' in res.data) {
+                        setImgList(res.data);
+                    } else {
+                        setImgList([]);
+                    }
+                    setLoading(false);
+                }
+            )
+        } else {
+            const username = get('username', '');
+            fetch(`https://wallhaven.cc/api/v1/collections/${username}/${collect}`, {
+                method: 'GET',
+                timeout: 30,
+                query: { apikey: get('apikey', ''), page },
+            }).then(
+                res => {
+                    if ('data' in res.data) {
+                        setImgList(res.data);
+                    } else {
+                        setImgList([]);
+                    }
+                    setLoading(false);
+                }
+            )
+        }
+    }, [search, page, collect]);
     PubSub.subscribe('search', (_, v) => {
         setSearch({ ...v, ...{ 'seed': nanoid() } });
     })
+    PubSub.subscribe('collect', (_, v) => {
+        setCollect(v);
+    })
     return (
         !loading ? (
-            imgList['data'].length !== 0 ?
+            ('data' in imgList && imgList['data'].length !== 0) ?
                 <>
                     <Grid container sx={{ justifyContent: 'space-around', height: 'calc(100vh - 166px)', overflow: 'auto', margin: '0 30px', width: 'calc(100% - 60px)' }} >
                         {
@@ -49,7 +77,7 @@ export default function ImageList() {
                                 count={imgList['meta']['last_page']}
                                 defaultPage={imgList['meta']['current_page']}
                                 color="primary"
-                                onChange={(_, v) => { setSearch({ ...search, ...{ 'page': `${v}` } }) }}
+                                onChange={(_, v) => { setPage(`${v}`) }}
                             />
                         </Grid>
                     </Grid >

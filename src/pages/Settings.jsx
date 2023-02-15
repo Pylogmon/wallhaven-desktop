@@ -10,6 +10,7 @@ export default function Settings() {
     const [toast, setToast] = useState(false);
     const [severity, setSeverity] = useState('success');
     const [apikey, setApikey] = useState(get('apikey', ''));
+    const [username, setUsername] = useState(get('username', ''));
     const [extFile, setExtFile] = useState(get('extFile', ''));
 
     async function selectFile() {
@@ -19,6 +20,7 @@ export default function Settings() {
     function saveConfig() {
         set('apikey', apikey);
         set('extFile', extFile);
+        set('username', username);
         writeConfig();
         toastMassage('保存成功', 'success')
     }
@@ -42,6 +44,17 @@ export default function Settings() {
                             size="small"
                             value={apikey}
                             onChange={(e) => { setApikey(e.target.value) }}
+                            sx={{ width: 250 }}
+                        />
+                    </Tooltip>
+                </SettingItem>
+                <Divider />
+                <SettingItem label="用户名">
+                    <Tooltip title="wallhaven.cc用户名，访问收藏需要">
+                        <TextField
+                            size="small"
+                            value={username}
+                            onChange={(e) => { setUsername(e.target.value) }}
                             sx={{ width: 250 }}
                         />
                     </Tooltip>
