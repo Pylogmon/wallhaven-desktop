@@ -1,18 +1,33 @@
 import React, { useState } from 'react'
-import { Box, TextField, Tooltip, Button, InputAdornment, Divider } from '@mui/material'
+import { Box, TextField, Tooltip, Button, InputAdornment, Divider, Snackbar, Alert } from '@mui/material'
 import SettingList from '../components/Setting/SettingList'
 import SettingItem from '../components/Setting/SettingItem'
+import { open } from '@tauri-apps/api/dialog';
 import { get, set, writeConfig } from '../utils/config'
 
 export default function Settings() {
+    const [message, setMessage] = useState("");
+    const [toast, setToast] = useState(false);
+    const [severity, setSeverity] = useState('success');
     const [apikey, setApikey] = useState(get('apikey', ''));
     const [extFile, setExtFile] = useState(get('extFile', ''));
 
-    function saveConfig() {
-        set('apikey', apikey);
-        writeConfig();
+    async function selectFile() {
+        setExtFile(await open())
     }
 
+    function saveConfig() {
+        set('apikey', apikey);
+        set('extFile', extFile);
+        writeConfig();
+        toastMassage('保存成功', 'success')
+    }
+
+    function toastMassage(msg, severity) {
+        setMessage(msg);
+        setSeverity(severity);
+        setToast(true);
+    }
     return (
         <Box sx={{
             width: '100%',
@@ -37,10 +52,12 @@ export default function Settings() {
                         <TextField
                             size="small"
                             sx={{ width: 250 }}
+                            value={extFile}
+                            onChange={(e) => { setExtFile(e.target.value) }}
                             InputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">
-                                        <Button size="small" onClick={saveConfig}>浏览</Button>
+                                        <Button size="small" onClick={selectFile}>浏览</Button>
                                     </InputAdornment>
                                 ),
                             }}
@@ -48,7 +65,16 @@ export default function Settings() {
                     </Tooltip>
                 </SettingItem>
             </SettingList>
-
+            <Button onClick={saveConfig} variant='contained'>保存</Button>
+            <Snackbar anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                open={toast}
+                autoHideDuration={3000}
+                onClose={() => { setToast(false) }}
+            >
+                <Alert onClose={() => { setToast(false) }} severity={severity} sx={{ width: '100%' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
         </Box>
     )
 }

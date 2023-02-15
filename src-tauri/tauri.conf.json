@@ -35,6 +35,9 @@
       },
       "clipboard": {
         "all": true
+      },
+      "dialog": {
+        "open": true
       }
     },
     "bundle": {
