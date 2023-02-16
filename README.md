@@ -1,7 +1,8 @@
-# Tauri + React
+# Wallhaven Desktop
 
-This template should help get you started developing with Tauri and React in Vite.
+Unofficial desktop client for wallhaven.cc, which is used to easily browse wallhaven wallpapers and set them as desktop wallpapers with one click
 
-## Recommended IDE Setup
+## Screenshot
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+![wallhaven](asset/wallhaven.png)
+![collections](asset/collections.png)
