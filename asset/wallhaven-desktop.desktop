@@ -1,0 +1,8 @@
+[Desktop Entry]
+Categories=Network;
+Comment=Unofficial desktop client for wallhaven.cc
+Exec=wallhaven-desktop
+Icon=wallhaven-desktop
+Name=wallhaven-desktop
+Terminal=false
+Type=Application
