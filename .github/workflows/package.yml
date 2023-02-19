@@ -50,11 +50,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [macos-latest, ubuntu-20.04, windows-latest]
+        platform: [macos-latest, ubuntu-latest, windows-latest]
         include:
           - platform: macos-latest
             bundle: dmg
-          - platform: ubuntu-20.04
+          - platform: ubuntu-latest
             bundle: deb
           - platform: windows-latest
             bundle: msi
@@ -80,7 +80,7 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
 
       - name: Install Tauri Dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-20.04'
+        if: matrix.platform == 'ubuntu-latest'
         run: |
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev libappindicator3-dev librsvg2-dev patchelf
@@ -104,7 +104,7 @@ jobs:
           if-no-files-found: error
 
       - name: Upload Artifacts(appimage)
-        if: matrix.platform == 'ubuntu-20.04'
+        if: matrix.platform == 'ubuntu-latest'
         uses: actions/upload-artifact@v3
         with:
           name: wallhaven-desktop.Appimage
